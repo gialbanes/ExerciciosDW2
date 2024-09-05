@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vídeos</title>
+</head>
+
+<body>
+    <h1>Bem-vindo à vídeo page!</h1>
+    <hr>
+
+    <% if(playlist && !video) { %>
+        <p>Ouvindo a playlist de <%= playlist %>
+        </p>
+        <% } else if(playlist && video) { %>
+            <p>Ouvindo a playlist de <%= playlist %> <br>
+                    Reproduzindo o vídeo <%= video %>
+            </p>
+            <% } else { %>
+                <p>Inicie uma playlist ou uma playlist e um vídeo!</p>
+                <% } %>
+</body>
+</html>
