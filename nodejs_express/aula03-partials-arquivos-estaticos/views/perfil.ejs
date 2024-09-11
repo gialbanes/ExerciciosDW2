@@ -1,0 +1,10 @@
+<%- include ('partials/navbar.ejs') %>
+<%- include ('partials/header.ejs') %>
+    <h1>Bem-vindo</h1>
+    <hr>
+    <% if(nome) { %>
+        <p>Seja bem vindo(a) <%= nome %></p>
+    <% } else { %>
+        <p>Faça login para acessar o seu perfil</p>
+    <% } %>
+    <%- include ('partials/footer.ejs') %>

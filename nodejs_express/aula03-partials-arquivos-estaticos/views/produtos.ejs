@@ -1,0 +1,24 @@
+<%- include ('partials/navbar.ejs') %>
+<%- include ('partials/header.ejs') %>
+    <h1>Conheça nossos produtos:</h1>
+
+    <!-- TAGS EJS CHAMANDO A VARIÁVEL QUE VEIO DO INDEX.JS -->
+    <%= produto %>
+
+        <!-- CONDIÇÃO PARA VERIFICAR SE O PRODUTO NÃO FOI PASSADO -->
+        <!-- AQUI NÃO FOI USADO O = PQ NÃO ESTAMOS CONCATENANDO UMA VARIÁVEL; SOMENTE SE FOR VARIÁVEL COLOCAMOS =  -->
+        <% if(!produto) { %>
+            <p>
+                <%= listaProdutos %>
+            </p> <!-- AQUI FOI UTILIZADO O SINAL DE = PQ É UMA VARIÁVEL -->
+            <% } %>
+
+                <!-- FOREACH PARA PERCORRER A LISTA DE PRODUTOS -->
+                <% if(!produto) { %>
+                    <% listaProdutos.forEach((produto)=> { %>
+                        <p><a href="/produtos/<%= produto %>">
+                                <%= produto %>
+                            </a></p>
+                        <% }) %>
+                            <% } %>
+<%- include ('partials/footer.ejs') %>
