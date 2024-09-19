@@ -7,7 +7,7 @@ const connection = new Sequelize({
   host: "localhost",
   username: "root",
   password: "", //OS ALUNOS DEVEM DEIXAR EM BRANCO
-  //database: 'loja', //USE LOJA; INICIO O PROJETO COM ESSA LINHA COMENTADA
+  database: 'loja', //USE LOJA; INICIO O PROJETO COM ESSA LINHA COMENTADA
   timezone: "-03:00",
 });
 export default connection;
