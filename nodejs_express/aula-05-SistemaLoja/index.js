@@ -5,11 +5,13 @@ const app = express();
 
 //IMPORTANDO O SEQUELIZE COM OS DADOS DA CONEXAO
 import connection from "./config/sequelize-config.js";
-
 // Importando os Controllers (onde estão as rotas)
 import ClientesController from "./controllers/ClientesController.js";
 import ProdutosController from "./controllers/ProdutosController.js";
 import PedidosController from "./controllers/PedidosController.js";
+
+//PERMITE CAPTURAR DADOS VINDOS DE FORMULÁRIOS
+app.use(express.urlencoded({extended: false}))
 
 //REALIZANDO A CONEXÃO COM O BANCO DE DADOS
 connection.authenticate().then(() => {
