@@ -56,8 +56,8 @@
                                     <td>
                                         <%= produto.categoria %>
                                     </td>
-                                    <td><a style="color: orange;" href="#">Editar</a></td>
-                                    <td><a style="color: red;" href="/produtos/delete/<%= produto.id %>">Deletar</a></td>
+                                    <td><a style="color: orange;" href="/produtos/edit/ <%= produto.id %>">Editar</a></td>
+                                    <td><a style="color: red;" href="/produtos/delete/<%= produto.id %>" onclick="return confirm('Deseja realmente deletar o cliente <%= produto.nome %>')" >Deletar</a></td>
                                 </tr>
                                 <% }) %>
                         </tbody>
