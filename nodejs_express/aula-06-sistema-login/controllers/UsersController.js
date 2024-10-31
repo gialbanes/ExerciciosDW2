@@ -5,12 +5,24 @@ import bcrypt from "bcrypt";
 
 //ROTA DE LOGIN
 router.get("/login", (req, res) => {
-  res.render("login");
+  res.render("login", {
+    loggedOut: true,
+    messages: req.flash()
+  });
 });
+
+//ROTA DE LOGOUT
+router.get("/logout", (req, res) => {
+  req.session.user = undefined;
+  res.redirect("/");
+})
 
 //ROTA DE CADASTRO
 router.get("/cadastro", (req, res) => {
-  res.render("cadastro");
+  res.render("cadastro", {
+    loggedOut: true,
+    messages: req.flash()
+  });
 });
 
 //ROTA DE CRIAÇÃO DE USUÁRIO
@@ -40,8 +52,8 @@ router.post("/createUser", (req, res) => {
         });
     } else {
         //CASO O USUÁRIO JÁ ESTEJA CADASTRADO
-        res.send(`Usuário já cadastrado. <br>
-        <a href="/login">Faça o login!</a>`)
+        req.flash('danger', "Usuário já cadastrado! Faça o login.");
+        res.redirect("/cadastro")
     }
   });
 });
@@ -63,15 +75,24 @@ router.post("/authenticate", (req, res) => {
         //SE A SENHA FOR VÁLIDA
         if(correct) {
             //AUTORIZA O LOGIN
+            req.session.user = {
+              id: user.id,
+              email: user.email
+            }
+            //res.send(`Usuário logado:<br>
+              //ID: ${req.session.user['id']}<br>
+              //E-mail: ${req.session.user['email']}`)
+            //ENVIA UMA MENSAGEM DE SUCESSO
+            req.flash('success', "Login efetuado com sucesso!") //CATEGORIA E MENSAGEM
             res.redirect("/");
         } else {
             //SENHA NÃO VÁLIDA
-            res.send(`Senha inválida! <br> 
-                <a href="/login">Tente novamente!</a>`)
+            req.flash('danger', "A senha informada está incorreta! Tente novamente.");
+            res.redirect("/login")
         }
     } else {
-      res.send(`Usuário não cadastrado. <br>
-        <a href="/login">Tente novamente!</a>`);
+      req.flash('danger', "O usuário informado não existe! Verifique os dados digitados.");
+      res.redirect("/login")
     }
   });
 });

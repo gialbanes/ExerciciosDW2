@@ -3,9 +3,11 @@ const router = express.Router();
 
 //IMPORTANDO O MODEL DE CLIENTE
 import Cliente from "../models/Cliente.js";
+//IMPORTANDO O MIDDLEWARE AUTH
+import Auth from "../middleware/Auth.js";
 
 // ROTA CLIENTES; GET => LENDO ALGO, PEGANDO PELA URL, ACESAR UM RECURSO
-router.get("/clientes", function (req, res) {
+router.get("/clientes", Auth, function (req, res) {
   Cliente.findAll().then((clientes) => {
     res.render("clientes", {
       clientes: clientes,
@@ -14,7 +16,7 @@ router.get("/clientes", function (req, res) {
 });
 
 //ROTA PARA CADASTRAR DADOS; POST -> CADASTRAR
-router.post("/clientes/new", (req, res) => {
+router.post("/clientes/new", Auth, (req, res) => {
   //RECENDO OS DADOS DO FORM E GUARDANDO NAS VARIÁVEIS
   const nome = req.body.nome;
   const cpf = req.body.cpf;
@@ -31,7 +33,7 @@ router.post("/clientes/new", (req, res) => {
 
 //ROTA PARA EXCLUIR CLIENTES
 //ESSA ROTA POSSUI UM PARÂMETRO ID
-router.get("/clientes/delete/:id", (req, res) => {
+router.get("/clientes/delete/:id", Auth, (req, res) => {
   //COLETAR O ID QUE VEIO NA URL
   const id = req.params.id;
   //MÉTODO PARA EXCLUIR
@@ -49,7 +51,7 @@ router.get("/clientes/delete/:id", (req, res) => {
 });
 
 //ROTA DE EDIÇÃO
-router.get("/clientes/edit/:id", (req, res) => {
+router.get("/clientes/edit/:id", Auth, (req, res) => {
   const id = req.params.id;
   Cliente.findByPk(id)
     .then((cliente) => {
@@ -63,7 +65,7 @@ router.get("/clientes/edit/:id", (req, res) => {
 });
 
 //ROTA DE ALTERAÇÃO
-router.post("/clientes/update", (req, res) => {
+router.post("/clientes/update", Auth, (req, res) => {
   const id = req.body.id;
   const nome = req.body.nome;
   const cpf = req.body.cpf;

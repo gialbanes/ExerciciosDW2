@@ -11,6 +11,24 @@ import ProdutosController from "./controllers/ProdutosController.js";
 import PedidosController from "./controllers/PedidosController.js";
 import UsersController from './controllers/UsersController.js';
 
+//IMPORTANDO O GERADOR DE SESSÕES DO EXPRESS
+import session from "express-session";
+
+//IMPORTANDO O MIDDLEWARE AUTH
+import Auth from "./middleware/Auth.js";
+
+//IMPORTANDO O EXPRESS FLASH
+import flash from "express-flash";
+app.use(flash())
+
+//CONFIGURANDO O EXPRESS-SESSION
+app.use(session({
+  secret: "lojasecret",
+  cookie: {maxAge: 3600000}, //SESSÃO EXPIRA EM 1 HORA
+  saveUninitialized: false,
+  resave: false
+}))
+
 //PERMITE CAPTURAR DADOS VINDOS DE FORMULÁRIOS
 app.use(express.urlencoded({extended: false}))
 
@@ -40,8 +58,10 @@ app.use("/", PedidosController);
 app.use("/", UsersController);
 
 // ROTA PRINCIPAL
-app.get("/", function (req, res) {
-  res.render("index");
+app.get("/", Auth, function (req, res) {
+  res.render("index", {
+    messages: req.flash()
+  });
 });
 
 //INICIANDO O SERVIDOR NA PORTA 8080; ELE RECEBRÁ AS REQUISIÇÕES E ENVIARÁ AS RESPOSTAS
