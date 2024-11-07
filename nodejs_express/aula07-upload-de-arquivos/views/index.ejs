@@ -14,9 +14,11 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-3 m-auto">
-                        <img src="uploads/6e8b92138b4c791ecabcf443a25997ce.png" alt="Imagem" class="img-thumbnail">
-                    </div>
+                    <% imagens.forEach(imagem => { %>
+                        <div class="col-md-3 m-auto">
+                            <img src="uploads/<%=imagem.file%>" alt="Imagem" class="img-thumbnail">
+                        </div>
+                    <% }) %> 
                 </div>
             </div>
             <form action="/upload" method="post" enctype="multipart/form-data"> <!-- Diz que esse formulário recebe arquivos -->
