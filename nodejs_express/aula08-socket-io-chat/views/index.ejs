@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>CHAT da FATEC</title>
+    <style>
+        .welome {
+            display: block;
+        }
+
+        .chatroom {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>CHAT da FATEC</h1>
+        <hr>
+        <div class="welcome">
+            <br>
+            <h5>Seus amigos estão te esperando!</h5>
+            <p>Escolha um apelido para entrar no chat...</p>
+            <br>
+            <input type="text" name="nickname" id="nickname" placeholder="Digite seu apelido" class="form-control">
+            <br>
+            <button onclick="join()" class="btn btn-primary w-100">Entrar no chat</button>
+        </div>
+        <div class="chatroom">
+            <div class="caht" id="chat">
+                <!-- AQUI IRÁ APARECER O CONTEÚDO DO CHAT-->
+            </div>
+            <hr>
+            <input type="text" name="msg" id="msg" class="form-control" placeholder="Digite a mensagem">
+            <button onclick="sendMsg()" class="btn btn-primary w-100">Enviar</button>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+    integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+    crossorigin="anonymous"></script>
+<script>
+    const socket = io(`http://${window.location.hostname}:3001`)
+    socket.on("showmsg", data => {
+        const chat = document.getElementById("chat")
+        const p = document.createElement("p")
+        p.innerHTML = `<strong>${data.nickname}</strong> : ${data.msg}`
+        chat.append(p)
+    })
+    function sendMsg() {
+        const nickname = document.getElementById("nickname").value
+        const msg = document.getElementById("msg")
+        const sentMsg = msg.value
+        socket.emit("msg", {msg :sentMsg, nickname : nickname})
+        msg.value = ""
+    }
+
+    function join() {
+        //COLETANDO O VALOR DO INPUT
+        const nickname = document.getElementById("nickname").value
+        //ENVIANDO PARA O BACK-END
+        socket.emit("join", { nickname: nickname })
+        //COLETANDO OS DAODS VINDO DO BACK-END
+        socket.on("join", data => {
+            //OCULTANDO O CAMPO DO NICKNAME
+            const welcome = document.querySelector(".welcome")
+            const chatroom = document.querySelector(".chatroom")
+            welcome.style.display = "none"
+            chatroom.style.display = "block"
+            //console.log(data)
+            const chat = document.getElementById("chat")
+            const p = document.createElement("p")
+            p.innerHTML = `<strong>${data.nickname}</strong> entrou no chat.`
+            chat.append(p)
+        })
+    }
+</script>
+
+</html>
